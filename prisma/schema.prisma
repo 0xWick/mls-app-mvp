@@ -7,10 +7,36 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Todo {
-  id          String    @id @default(uuid()) @map("_id")
-  title       String?
-  isCompleted Boolean   @default(false)
-  updatedAt   DateTime? @updatedAt
-  createdAt   DateTime  @default(now())
+// Enum
+enum UserType {
+  Client
+  Realtor
+}
+
+enum ListingStatus {
+  Active
+  Inactive
+}
+
+// User Model for Prisma
+model User {
+  id        String    @id @default(auto()) @map("_id") @db.ObjectId
+  name      String
+  email     String    @unique
+  password  String
+  type      UserType
+  createdAt DateTime  @default(now())
+  Listing   Listing[]
+}
+
+// Listing Model for Prisma
+model Listing {
+  id          String        @id @default(auto()) @map("_id") @db.ObjectId
+  title       String
+  description String
+  price       Float
+  status      ListingStatus @default(Active)
+  createdAt   DateTime      @default(now())
+  userId      String        @map("_userId") @db.ObjectId
+  user        User          @relation(fields: [userId], references: [id])
 }
