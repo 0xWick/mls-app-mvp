@@ -4,7 +4,7 @@
 export enum UserType {
     Client = "Client",
     Realtor = "Realtor",
-  }
+}
   
   // User Type
   // ? Client or Realtor
